@@ -95,10 +95,10 @@ int main()
             std::cin.clear(); // reset error flags
             std::cin.ignore(1000, '\n'); // discard bad input
             std::cout << "\nInvalid input. Enter a number.\n\n";
-        }else if(opt < 1 || opt > 6)
+        }else if(opt < 1 || opt > 7)
         {
         std::cout << "\nSelection out of range."
-                  << " Enter a number from 1 to 6.\n\n";
+                  << " Enter a number from 1 to 7.\n\n";
         }
         std::cin.ignore();
         // End of Valid input checker.
@@ -156,7 +156,7 @@ int main()
             CLEAR();
             break;
         }
-    }while(opt != 6);
+    }while(opt != 7);
     std::cout << "\nEnding Program\n";
 }
 
@@ -286,12 +286,16 @@ void List::eraseEnd()
     //  Erase Value
 void List::eraseValue(int element)
 {
+    Node *aux = start;
     if(empty())
     {
         std::cout << "\nThe list is empty\n";
     }else if(start->next == start && start->getElement() == element)
     {
-
+        start = NULL;
+    }else
+    {
+        
     }
 }
 
