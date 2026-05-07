@@ -185,6 +185,7 @@ Node::Node(int element_)
 {
     element = element_; // Surely works when it's new.
     next = NULL;
+    prev = NULL;
 }
 
     // Getter
@@ -306,25 +307,34 @@ void List::eraseValue(int element)
     if(empty())
     {
         std::cout << "\nThe list is empty\n";
+        return;
     }else if(start->next == start && start->getElement() == element)
     {
         start = NULL;
     }else
     {
-        while(aux->next != start)
+        do
         {
             if(aux->getElement() == element)    //  Found
             {
                 aux->prev->next = aux->next;
                 aux->next->prev = aux->prev;
-                delete aux;
+                if(aux == start)
+                {
+                    start = start->next;
+                }
+                break;
+            }
+            if(aux->next == start)
+            {
+                std::cout << "\nThe element "<< element <<" is not on the list\n";
                 return;
             }
             aux = aux->next;
-        }
+        }while(true);
         //  Not found
-        std::cout << "\nThe element "<< element <<" is not on the list\n";
     }
+    delete aux;
 }
 
     //  Show
