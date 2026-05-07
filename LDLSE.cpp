@@ -144,7 +144,7 @@ int main()
             list.show();
             PAUSE();
             CLEAR();
-            break;
+            break;  
         case 4:
             list.eraseStart();
             PAUSE();
@@ -152,6 +152,22 @@ int main()
             break;
         case 5:
             list.eraseEnd();
+            PAUSE();
+            CLEAR();
+            break;
+        case 6:
+            std::cout << "Please enter int value for the value to erase:\n";
+            while(true)
+            {
+                std::getline(std::cin, elementToInsert);
+                if(isValidInt(elementToInsert))
+                {
+                    theElement = std::stoi(elementToInsert);
+                    break;
+                }
+                std::cout << "Invalid value:\n";
+            }
+            list.eraseValue(theElement);
             PAUSE();
             CLEAR();
             break;
@@ -295,7 +311,19 @@ void List::eraseValue(int element)
         start = NULL;
     }else
     {
-        
+        while(aux->next != start)
+        {
+            if(aux->getElement() == element)    //  Found
+            {
+                aux->prev->next = aux->next;
+                aux->next->prev = aux->prev;
+                delete aux;
+                return;
+            }
+            aux = aux->next;
+        }
+        //  Not found
+        std::cout << "\nThe element "<< element <<" is not on the list\n";
     }
 }
 
