@@ -205,20 +205,18 @@ void List::insertStart(int element)
     if(empty())
     {
         start = create;
-        //create->next = create;
-        //create->prev = create;
+        create->next = create;
+        create->prev = create;
     }else
     {
         Node *aux = start;
         create->next = start;
-/*
         while(aux->next != start)
         {
             aux = aux->next;
         }
         aux->next = create;
         create->prev = aux;
-*/
         start->prev = create;
         start = create;
     }  
@@ -232,21 +230,17 @@ void List::insertEnd(int element)
     if(empty())
     {
         start = create;
-/*
         start->next = start;
         create->prev = create;
-*/
     }else
     {
         Node *aux = start;
-        while(aux->next != NULL)
+        while(aux->next != start)
         {
             aux = aux->next;
         }
-/*
         create->next = start;
         start->prev = create;
-*/
         aux->next = create;
         create->prev = aux;
     }
@@ -261,13 +255,19 @@ void List::eraseStart()
     }else
     {
         Node *aux = start;
-        if(start->next == NULL)
+        if(start->next == start)
         {
             start = NULL;
         }else
         {
+            while(aux->next != start)
+            {
+                aux = aux->next;
+            }
+            aux->next = start->next;
+            start->next->prev = aux;  //
+            aux = start;
             start = start->next;
-            start->prev = NULL;
         }
         
         delete aux;
@@ -283,20 +283,20 @@ void List::eraseEnd()
     }else
     {
         Node *aux = start;
-        if(start->next == NULL)
+        if(start->next == start)
         {
             start = NULL;
         }else
         {
-            while(aux->next->next != NULL)
+            while(aux->next->next != start)
             {
                 aux = aux->next;
             }
         }
 
         delete aux->next;
-        aux->next = NULL;
-        //start->prev = aux;
+        aux->next = start;
+        start->prev = aux;
     }
 }
 
@@ -308,7 +308,7 @@ void List::eraseValue(int element)
     {
         std::cout << "\nThe list is empty\n";
         return;
-    }else if(start->next == NULL && start->getElement() == element)
+    }else if(start->next == start && start->getElement() == element)
     {
         start = NULL;
     }else
@@ -317,21 +317,15 @@ void List::eraseValue(int element)
         {
             if(aux->getElement() == element)    //  Found
             {
-                if(aux->prev == NULL)
+                aux->prev->next = aux->next;
+                aux->next->prev = aux->prev;
+                if(aux == start)
                 {
                     start = start->next;
-                    start->prev = NULL;
-                }else if(aux->next == NULL)
-                {
-                    aux->prev->next = NULL;
-                }else
-                {
-                    aux->prev->next = aux->next;
-                    aux->next->prev = aux->prev;
                 }
                 break;
             }
-            if(aux->next == NULL)
+            if(aux->next == start)
             {
                 std::cout << "\nThe element "<< element <<" is not on the list\n";
                 return;
@@ -353,12 +347,12 @@ void List::show()
     {
         std::cout << "\n-----------\n";
         Node *aux = start;
-        while(aux != NULL)
+        while(aux->next != start)
         {
             std::cout << aux->getElement() << '\n';
             aux = aux->next;
         }
-        //std::cout << aux->getElement() << '\n';
+        std::cout << aux->getElement() << '\n';
     }
 }
 
